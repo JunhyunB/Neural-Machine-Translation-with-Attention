@@ -2,13 +2,14 @@ import torch
 import torch.nn as nn
 
 class Encoder(nn.Module):
-    def __init__(self, hidden_size=1000, batch_size=80):
+    def __init__(self, hidden_size=1000, batch_size=80, embedding_size=620):
         super(Encoder, self).__init__()
+        self.hidden_size = hidden_size
         self.batch_size = batch_size
 
-        self.encoder = nn.GRU(hidden_size, hidden_size, batch_first=True, bidirectional=True)
+        self.encoder = nn.GRU(embedding_size, hidden_size, batch_first=True, bidirectional=True)
 
-    def forward(self, src, hidden):
+    def forward(self, embedded, hidden):
         output, hidden = self.encoder(embedded, hidden)
 
         return output, hidden
@@ -17,19 +18,17 @@ class Encoder(nn.Module):
         return nn.init.orthogonal_(torch.empty(2, self.batch_size, self.hidden_size))
 
 class Decoder(nn.Module):
-    def __init__(self, hidden_size=1000, batch_size=80):
+    def __init__(self, hidden_size=1000, batch_size=80, embedding_size=620):
         super(Decoder, self).__init__()
+        self.hidden_size = hidden_size
         self.batch_size = batch_size
 
-        self.decoder = nn.GRU(hidden_size, hidden_size, batch_first=True)
+        self.decoder = nn.GRU(embedding_size, hidden_size, batch_first=True)
         
-    def forward(self, trg, hidden):
+    def forward(self, embedded, hidden):
         output, hidden = self.decoder(embedded, hidden)
 
         return output, hidden
-
-    def initHidden(self):
-        return nn.init.orthogonal_(torch.empty(2, self.batch_size, self.hidden_size))
 
 class Seq2Seq(nn.Module):
     def __init__(self, hidden_size=1000, vocab_len=None, embedding_size=620, batch_size=80, pad_idx=0):
@@ -53,4 +52,11 @@ class Seq2Seq(nn.Module):
         trg_embedded = self.embedding(trg)
         trg_embedded = self.dropout(trg_embedded)
 
-        return src, trg
+        enc_init = self.encoder.initHidden()
+        enc_output, enc_hidden = self.encoder(src_embedded, enc_init) # enc_output : (B, seq_len, hidden*2)  enc_hidden : (2, B, hidden_size)
+
+        dec_output, _ = self.decoder(trg_embedded, enc_hidden[-1].unsqueeze(0)) # In the paper, they used backward hidden of enc.
+        output = self.classifier(dec_output)
+        output = self.softmax(output)
+
+        return output

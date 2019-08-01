@@ -52,14 +52,11 @@ for epoch in range(epochs):
 
         output = model(src, trg)
 
-        print(output)
-
-
-        '''loss = criterion(output, trg_real)
+        loss = criterion(output.transpose(1,2), trg_real)
 
         if True:
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
         
-        print(loss)'''
+        print(loss)
