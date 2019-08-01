@@ -26,7 +26,7 @@ git clone https://github.com/JunhyunB/Neural-Machine-Translation-with-Attention.
 cd data
 python tokenizer.py
 ```
-Before run tokenizer.py, you should change your data directory and target vocabulary size.  
+Before run tokenizer.py, you have to change your data directory and target vocabulary size.  
 ( change data.txt and vocab_size 10000 for your dataset )
 ```
 [tokenizer.py]
