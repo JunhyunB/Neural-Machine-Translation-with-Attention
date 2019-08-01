@@ -2,7 +2,7 @@
 ## Neural Machine Translation with Attention
 This is PyTorch implementation for the paper   
 [Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473)  
-(Slightly different with details - tokenization method, etc.)
+(The details are slightly different - tokenization method, etc.)
 
 # Requirements
 * [PyTorch](http://pytorch.org/) version >= 1.0.0
