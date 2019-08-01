@@ -11,6 +11,16 @@ from model.seq2seq import Seq2Seq
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+if torch.cuda.is_available():
+    with_cuda = True
+    device_ids = None
+    print("------- GPU Working -------")
+    print("[Current GPU]:" + str(torch.cuda.get_device_name(0)))
+else:
+    with_cuda = False
+    device_ids = None
+    print("------- CPU Working -------")
+
 data_loaded = CustomDataset(path='data/eng-fra.txt')
 pad_idx = data_loaded.vocab_stoi['<pad>']
 
@@ -27,7 +37,7 @@ epochs = 1
 learning_rate = 1e-3
 
 model = Seq2Seq(hidden_size=hidden_size, vocab_len=vocab_len, embedding_size=embedding_size,
-                batch_size=batch_size, pad_idx=pad_idx)
+                batch_size=batch_size, pad_idx=pad_idx, device=device)
 
 model.to(device)
 

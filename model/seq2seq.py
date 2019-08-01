@@ -2,10 +2,11 @@ import torch
 import torch.nn as nn
 
 class Encoder(nn.Module):
-    def __init__(self, hidden_size=1000, batch_size=80, embedding_size=620):
+    def __init__(self, hidden_size=1000, batch_size=80, embedding_size=620, device=None):
         super(Encoder, self).__init__()
         self.hidden_size = hidden_size
         self.batch_size = batch_size
+        self.device = device
 
         self.encoder = nn.GRU(embedding_size, hidden_size, batch_first=True, bidirectional=True)
 
@@ -15,7 +16,7 @@ class Encoder(nn.Module):
         return output, hidden
 
     def initHidden(self):
-        return nn.init.orthogonal_(torch.empty(2, self.batch_size, self.hidden_size))
+        return nn.init.orthogonal_(torch.empty(2, self.batch_size, self.hidden_size)).to(self.device)
 
 class Decoder(nn.Module):
     def __init__(self, hidden_size=1000, batch_size=80, embedding_size=620):
@@ -31,13 +32,13 @@ class Decoder(nn.Module):
         return output, hidden
 
 class Seq2Seq(nn.Module):
-    def __init__(self, hidden_size=1000, vocab_len=None, embedding_size=620, batch_size=80, pad_idx=0):
+    def __init__(self, hidden_size=1000, vocab_len=None, embedding_size=620, batch_size=80, pad_idx=0, device=None):
         super(Seq2Seq, self).__init__()
         self.hidden_size = hidden_size
         self.batch_size = batch_size
 
-        self.encoder = Encoder(hidden_size, batch_size)
-        self.decoder = Decoder(hidden_size, batch_size)
+        self.encoder = Encoder(hidden_size, batch_size, embedding_size, device)
+        self.decoder = Decoder(hidden_size, batch_size, embedding_size)
 
         # src, trg share embedding
         self.embedding = nn.Embedding(vocab_len, embedding_size, padding_idx=pad_idx)
