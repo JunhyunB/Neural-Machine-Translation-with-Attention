@@ -8,6 +8,7 @@ This is **PyTorch** implementation for the paper
 * [**PyTorch**](http://pytorch.org/) version >= 1.0.0
 * **Python** version >= 3.5
 * [**torchtext**](https://torchtext.readthedocs.io/en/latest/#) version >= 0.4.0
+* [**Google SentencePiece**](https://github.com/google/sentencepiece)
 
 # Dataset
 You need parallel text dataset in the data directory as shown below.   
