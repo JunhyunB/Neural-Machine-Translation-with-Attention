@@ -2,6 +2,7 @@
 ## Neural Machine Translation with Attention
 This is PyTorch implementation for the paper   
 [Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473)  
+(Slightly different with details - tokenization method, etc.)
 
 # Requirements
 * [PyTorch](http://pytorch.org/) version >= 1.0.0
@@ -34,3 +35,6 @@ import sentencepiece as spm
 s = spm.SentencePieceProcessor()
 spm.SentencePieceTrainer.Train('--input=data.txt --model_prefix=tokenizer --vocab_size=10000')
 ```
+
+# Author
+Junhyun Bae, Kyungpook National University ABR Lab (junhyun.bae.kr@gmail.com)

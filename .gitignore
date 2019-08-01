@@ -2,3 +2,4 @@
 *.txt
 *.model
 *.vocab
+*.pyc
