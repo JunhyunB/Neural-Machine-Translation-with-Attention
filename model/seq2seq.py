@@ -16,8 +16,8 @@ class Encoder(nn.Module):
 
         return output, hidden
 
-    def initHidden(self):
-        return nn.init.orthogonal_(torch.empty(2, self.batch_size, self.hidden_size)).to(self.device)
+    def initHidden(self, batch_size):
+        return nn.init.orthogonal_(torch.empty(2, batch_size, self.hidden_size)).to(self.device)
 
 class Decoder(nn.Module):
     def __init__(self, hidden_size=1000, batch_size=80, embedding_size=620):
@@ -60,7 +60,7 @@ class Seq2Seq(nn.Module):
         trg_embedded = self.dropout(trg_embedded)
         trg_embedded = utils.rnn.pack_padded_sequence(trg_embedded, trg_lengths, batch_first=True, enforce_sorted=False)
 
-        enc_init = self.encoder.initHidden()
+        enc_init = self.encoder.initHidden(src.size(0))
         enc_output, enc_hidden = self.encoder(src_embedded, enc_init) # enc_output : (B, seq_len, hidden*2)  enc_hidden : (2, B, hidden_size)
         enc_output, _ = utils.rnn.pad_packed_sequence(enc_output, batch_first=True, padding_value=0)
         dec_output, _ = self.decoder(trg_embedded, enc_hidden[-1].unsqueeze(0)) # In the paper, they used backward hidden of enc.
