@@ -38,6 +38,7 @@ class Seq2Seq(nn.Module):
         self.hidden_size = hidden_size
         self.batch_size = batch_size
         self.trg_max_seq_len = trg_max_seq_len
+        self.device = device
 
         self.encoder = Encoder(hidden_size, batch_size, embedding_size, device)
         self.decoder = Decoder(hidden_size, batch_size, embedding_size)
@@ -68,7 +69,7 @@ class Seq2Seq(nn.Module):
         output = self.classifier(dec_output)
         output = self.softmax(output)
 
-        padding_tensor = torch.zeros(output.size(0), self.trg_max_seq_len-output.size(1),output.size(2))
+        padding_tensor = torch.zeros(output.size(0), self.trg_max_seq_len-output.size(1),output.size(2)).to(self.device)
         output = torch.cat((output, padding_tensor), dim=1)
 
         return output
