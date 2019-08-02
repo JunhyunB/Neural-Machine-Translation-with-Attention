@@ -80,5 +80,5 @@ for epoch in range(epochs):
 
     epoch_loss = train_loss / len(data_loaded)
 
-    if (i % interval == 0) or (i == 1):
+    if (epoch % interval == 0) or (epoch == 1):
         print("{} Loss: {:.4f}".format(phase, epoch_loss))
