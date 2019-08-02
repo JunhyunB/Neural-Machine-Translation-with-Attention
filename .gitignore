@@ -3,3 +3,4 @@
 *.model
 *.vocab
 *.pyc
+settings.json
