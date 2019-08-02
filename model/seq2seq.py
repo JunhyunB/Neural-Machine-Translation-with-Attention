@@ -42,7 +42,7 @@ class Seq2Seq(nn.Module):
 
         self.encoder = Encoder(hidden_size, batch_size, embedding_size, device)
         self.decoder = Decoder(hidden_size, batch_size, embedding_size)
-        #self.attn_layer = nn.Linear(hidden_size*)
+        #self.alignment_model= nn.Linear(hidden_size*3,1)
 
         # src, trg share embedding
         self.embedding = nn.Embedding(vocab_len, embedding_size, padding_idx=pad_idx)
@@ -66,6 +66,11 @@ class Seq2Seq(nn.Module):
         enc_output, _ = R.pad_packed_sequence(enc_output, batch_first=True, padding_value=0)
         dec_output, _ = self.decoder(trg_embedded, enc_hidden[-1].unsqueeze(0)) # In the paper, they used backward hidden of enc.
         dec_output, _ = R.pad_packed_sequence(dec_output, batch_first=True, padding_value=0)
+
+       ''' print(enc_output.size())
+        print(dec_output.size())
+        print(torch.cat((dec_output.unsqueeze(2), enc_output.unsqueeze(2)),dim=-1).size())'''
+
         output = self.classifier(dec_output)
         output = self.softmax(output)
 
