@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.utils.rnn as R
 
 class Encoder(nn.Module):
-    def __init__(self, hidden_size=1000, batch_size=80, embedding_size=620, device=None):
+    def __init__(self, hidden_size, batch_size, embedding_size, device):
         super(Encoder, self).__init__()
         self.hidden_size = hidden_size
         self.batch_size = batch_size
@@ -20,7 +20,7 @@ class Encoder(nn.Module):
         return nn.init.orthogonal_(torch.empty(2, batch_size, self.hidden_size)).to(self.device)
 
 class Decoder(nn.Module):
-    def __init__(self, hidden_size=1000, batch_size=80, embedding_size=620):
+    def __init__(self, hidden_size, batch_size, embedding_size):
         super(Decoder, self).__init__()
         self.hidden_size = hidden_size
         self.batch_size = batch_size
@@ -65,7 +65,7 @@ class Seq2Seq(nn.Module):
         enc_output, enc_hidden = self.encoder(src_embedded, enc_init) # enc_output : (B, seq_len, hidden*2)  enc_hidden : (2, B, hidden_size)
         enc_output, _ = R.pad_packed_sequence(enc_output, batch_first=True, padding_value=0)
         dec_output, _ = self.decoder(trg_embedded, enc_hidden[-1].unsqueeze(0)) # In the paper, they used backward hidden of enc.
-        dec_output, a = R.pad_packed_sequence(dec_output, batch_first=True, padding_value=0)
+        dec_output, _ = R.pad_packed_sequence(dec_output, batch_first=True, padding_value=0)
         output = self.classifier(dec_output)
         output = self.softmax(output)
 

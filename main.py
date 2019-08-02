@@ -36,6 +36,7 @@ train_loader = torchdata.DataLoader(dataset=data_loaded,
 trg_max_seq_len = next(iter(train_loader))[1].size(1) - 1 # <s> is not included
 
 epochs = 1
+interval = 1
 learning_rate = 3e-3
 
 model = Seq2Seq(hidden_size=hidden_size, vocab_len=vocab_len, embedding_size=embedding_size,
@@ -51,11 +52,15 @@ def count_parameters(model):
 print(f'Model parameters : {count_parameters(model):,}')
 print("Training START!")
 
+phase = 'Train'
+
 for epoch in range(epochs):
     epoch += 1
-    
-    model.train(True)
-
+    if phase == 'Train':
+        model.train(True)
+    else:
+        model.train(False)
+    train_loss = 0
     for no, batch in enumerate(train_loader):
         src = batch[0].to(device)
         trg_ = batch[1].to(device)
@@ -66,9 +71,14 @@ for epoch in range(epochs):
 
         loss = criterion(output.transpose(1,2), trg_real)
 
-        if True:
+        if phase == 'Train':
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-        
         print(loss)
+        train_loss += loss.item()
+
+    epoch_loss = train_loss / len(data_loaded)
+
+    if (i % interval == 0) or (i == 1):
+        print("{} Loss: {:.4f}".format(phase, epoch_loss))
