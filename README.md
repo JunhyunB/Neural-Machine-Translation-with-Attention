@@ -1,4 +1,5 @@
-# Introduction [Not Finished yet!]
+# Introduction 
+### [code works for vanilla seq2seq, but attention part is not implemented yet]
 ## Neural Machine Translation with Attention
 This is **PyTorch** implementation for the paper   
 [Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473)  
