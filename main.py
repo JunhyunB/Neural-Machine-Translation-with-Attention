@@ -37,7 +37,7 @@ trg_max_seq_len = next(iter(train_loader))[1].size(1) - 1 # <s> is not included
 
 epochs = 1
 interval = 1
-learning_rate = 3e-3
+learning_rate = 5e-2
 
 model = Seq2Seq(hidden_size=hidden_size, vocab_len=vocab_len, embedding_size=embedding_size,
                 batch_size=batch_size, pad_idx=pad_idx, trg_max_seq_len=trg_max_seq_len, device=device)
