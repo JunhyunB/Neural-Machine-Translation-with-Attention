@@ -21,8 +21,8 @@ class CustomDataset(torchdata.Dataset):
                 if len(line) != 2:
                     break
                 else:
-                    source.append(['<s>']+sp.EncodeAsPieces(line[0])+['</s>'])
-                    target.append(['<s>']+sp.EncodeAsPieces(line[1])+['</s>'])
+                    source.append(['<sos>']+sp.EncodeAsPieces(line[0])+['<eos>'])
+                    target.append(['<sos>']+sp.EncodeAsPieces(line[1])+['<eos>'])
         
         print("Tokenization Complete")
         print("Making Vocabulary...")
