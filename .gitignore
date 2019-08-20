@@ -4,3 +4,4 @@
 *.vocab
 *.pyc
 settings.json
+.idea
