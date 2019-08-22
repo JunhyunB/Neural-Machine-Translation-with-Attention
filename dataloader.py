@@ -33,8 +33,6 @@ class CustomDataset(torchdata.Dataset):
         self.vocab_stoi = defaultdict()
         self.vocab_stoi['<pad>'] = 0
         self.vocab_stoi['<unk>'] = 1
-        self.vocab_stoi['<sos>'] = 2
-        self.vocab_stoi['<eos>'] = 3
 
         for i, token in enumerate(unique_tokens, 4):
             self.vocab_stoi[token] = i
