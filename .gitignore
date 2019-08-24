@@ -3,5 +3,5 @@
 *.model
 *.vocab
 *.pyc
-settings.json
+*.json
 .idea
