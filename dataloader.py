@@ -34,7 +34,7 @@ class CustomDataset(torchdata.Dataset):
         self.vocab_stoi['<pad>'] = 0
         self.vocab_stoi['<unk>'] = 1
 
-        for i, token in enumerate(unique_tokens, 4):
+        for i, token in enumerate(unique_tokens, 2):
             self.vocab_stoi[token] = i
 
         self.vocab_itos = [t for t, i in sorted([(token, index) for token, index in self.vocab_stoi.items()], key=lambda x:x[1])]
